@@ -231,3 +231,24 @@
   color: #ef4444;
   font-weight: bold;
 }
+
+/* Walking - leg movement */
+.turtle--walking .turtle__leg--fl,
+.turtle--walking .turtle__leg--br {
+  animation: leg-walk-a 0.3s ease-in-out infinite;
+}
+
+.turtle--walking .turtle__leg--fr,
+.turtle--walking .turtle__leg--bl {
+  animation: leg-walk-b 0.3s ease-in-out infinite;
+}
+
+@keyframes leg-walk-a {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  50% { transform: translateX(4px) translateY(-2px); }
+}
+
+@keyframes leg-walk-b {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  50% { transform: translateX(-4px) translateY(-2px); }
+}

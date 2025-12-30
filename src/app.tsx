@@ -1,5 +1,6 @@
 import { useState, useRef } from "react"
 import { useTurtleState } from "@/hooks/use-turtle-state"
+import { useTurtleMovement } from "@/hooks/use-turtle-movement"
 import { Turtle } from "@/components/turtle/turtle"
 import { FeedEffect } from "@/components/feed-effect"
 import { DeathScreen } from "@/components/death-screen"
@@ -8,6 +9,7 @@ import { Button } from "@/components/ui/button"
 
 export function App() {
   const { state, feed, play, sleep, reset } = useTurtleState()
+  const { position, isMoving } = useTurtleMovement(state.isAsleep, state.isDead)
   const [isEating, setIsEating] = useState(false)
   const [isHappy, setIsHappy] = useState(false)
   const [feedPosition, setFeedPosition] = useState<{ x: number; y: number } | null>(null)
@@ -32,29 +34,41 @@ export function App() {
 
   return (
     <div
-      className="min-h-screen w-full flex flex-col items-center justify-center gap-8 p-4"
+      className="min-h-screen w-full relative overflow-hidden"
       onContextMenu={handleContextMenu}
     >
-      <h1 className="text-2xl font-bold font-mono">Turtle Tamagotchi</h1>
-
-      <div className="flex flex-col gap-2">
-        <StatBar label="Hunger" value={state.hunger} color="#22c55e" />
-        <StatBar label="Happiness" value={state.happiness} color="#eab308" />
+      {/* UI overlay */}
+      <div className="absolute top-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 z-10">
+        <h1 className="text-2xl font-bold font-mono">Turtle Tamagotchi</h1>
+        <div className="flex flex-col gap-2">
+          <StatBar label="Hunger" value={state.hunger} color="#22c55e" />
+          <StatBar label="Happiness" value={state.happiness} color="#eab308" />
+        </div>
+        <Button onClick={sleep} variant="outline" disabled={state.isDead}>
+          {state.isAsleep ? "Wake Up" : "Sleep"}
+        </Button>
       </div>
 
-      <Turtle
-        isAsleep={state.isAsleep}
-        isDead={state.isDead}
-        isEating={isEating}
-        isHappy={isHappy}
-        onClick={handlePlay}
-      />
+      {/* Wandering turtle */}
+      <div
+        className="absolute transition-all duration-1000 ease-in-out"
+        style={{
+          left: `${position.x}%`,
+          top: `${position.y}%`,
+          transform: "translate(-50%, -50%)",
+        }}
+      >
+        <Turtle
+          isAsleep={state.isAsleep}
+          isDead={state.isDead}
+          isEating={isEating}
+          isHappy={isHappy}
+          isMoving={isMoving}
+          onClick={handlePlay}
+        />
+      </div>
 
-      <Button onClick={sleep} variant="outline" disabled={state.isDead}>
-        {state.isAsleep ? "Wake Up" : "Sleep"}
-      </Button>
-
-      <p className="text-xs text-muted-foreground">
+      <p className="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs text-muted-foreground">
         Right-click anywhere to feed
       </p>
 

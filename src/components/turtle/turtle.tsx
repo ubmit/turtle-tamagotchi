@@ -5,6 +5,7 @@ interface TurtleProps {
   isDead: boolean
   isEating: boolean
   isHappy: boolean
+  isMoving?: boolean
   onClick: () => void
 }
 
@@ -13,6 +14,7 @@ export function Turtle({
   isDead,
   isEating,
   isHappy,
+  isMoving,
   onClick,
 }: TurtleProps) {
   const getState = () => {
@@ -20,6 +22,7 @@ export function Turtle({
     if (isAsleep) return "sleeping"
     if (isEating) return "eating"
     if (isHappy) return "happy"
+    if (isMoving) return "walking"
     return "idle"
   }
 
