@@ -1,4 +1,10 @@
-import { createContext, useEffect, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 
 type ThemeProviderProps = {
   children: ReactNode;
@@ -15,25 +21,25 @@ function getSystemTheme() {
     : THEMES.LIGHT;
 }
 
-const ThemeProviderContext = createContext<string>("");
+const ThemeProviderContext = createContext(getSystemTheme());
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
   const [systemTheme, setSystemTheme] = useState(() => getSystemTheme());
 
   useEffect(() => {
+    // HTML element
     const root = window.document.documentElement;
-    root.classList.remove("light", "dark");
+    root.classList.remove(THEMES.LIGHT, THEMES.DARK);
     root.classList.add(systemTheme);
-
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
     function handleChange(event: MediaQueryListEvent) {
       const currentTheme = event.matches ? THEMES.DARK : THEMES.LIGHT;
-      root.classList.remove("light", "dark");
+      root.classList.remove(THEMES.LIGHT, THEMES.DARK);
       root.classList.add(currentTheme);
       setSystemTheme(currentTheme);
     }
 
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     mediaQuery.addEventListener("change", handleChange);
 
     return () => mediaQuery.removeEventListener("change", handleChange);
@@ -44,4 +50,14 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       {children}
     </ThemeProviderContext.Provider>
   );
+}
+
+export function useTheme() {
+  const context = useContext(ThemeProviderContext);
+
+  if (!context) {
+    throw new Error("useTheme must be used within ThemeProvider");
+  }
+
+  return context;
 }
