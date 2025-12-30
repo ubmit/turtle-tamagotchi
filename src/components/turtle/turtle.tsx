@@ -1,12 +1,12 @@
-import "./turtle.css"
+import "./turtle.css";
 
 interface TurtleProps {
-  isAsleep: boolean
-  isDead: boolean
-  isEating: boolean
-  isHappy: boolean
-  isMoving?: boolean
-  onClick: () => void
+  isAsleep: boolean;
+  isDead: boolean;
+  isEating: boolean;
+  isHappy: boolean;
+  isMoving?: boolean;
+  onClick: () => void;
 }
 
 export function Turtle({
@@ -18,13 +18,13 @@ export function Turtle({
   onClick,
 }: TurtleProps) {
   const getState = () => {
-    if (isDead) return "dead"
-    if (isAsleep) return "sleeping"
-    if (isEating) return "eating"
-    if (isHappy) return "happy"
-    if (isMoving) return "walking"
-    return "idle"
-  }
+    if (isDead) return "dead";
+    if (isAsleep) return "sleeping";
+    if (isEating) return "eating";
+    if (isHappy) return "happy";
+    if (isMoving) return "walking";
+    return "idle";
+  };
 
   return (
     <div className="turtle-container" onClick={onClick}>
@@ -47,5 +47,5 @@ export function Turtle({
       {isAsleep && <div className="turtle__zzz">💤</div>}
       {isDead && <div className="turtle__dead">✕</div>}
     </div>
-  )
+  );
 }

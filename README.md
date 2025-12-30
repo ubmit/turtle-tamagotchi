@@ -11,9 +11,9 @@ A pixel art virtual pet game inspired by the classic Tamagotchi.
 
 ## Mechanics
 
-| Stat | Decay | Recovery |
-|------|-------|----------|
-| Hunger | -1 every 10s | +5 per feed |
+| Stat      | Decay        | Recovery     |
+| --------- | ------------ | ------------ |
+| Hunger    | -1 every 10s | +5 per feed  |
 | Happiness | -1 every 10s | +10 per play |
 
 Stats turn red and pulse when below 25. Turtle dies if either stat hits 0.

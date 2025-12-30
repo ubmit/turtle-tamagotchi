@@ -1,37 +1,43 @@
-import { useState, useRef } from "react"
-import { useTurtleState } from "@/hooks/use-turtle-state"
-import { useTurtleMovement } from "@/hooks/use-turtle-movement"
-import { Turtle } from "@/components/turtle/turtle"
-import { FeedEffect } from "@/components/feed-effect"
-import { DeathScreen } from "@/components/death-screen"
-import { StatBar } from "@/components/stat-bar"
-import { Button } from "@/components/ui/button"
+import { useState, useRef } from "react";
+import { useTurtleState } from "@/hooks/use-turtle-state";
+import { useTurtleMovement } from "@/hooks/use-turtle-movement";
+import { Turtle } from "@/components/turtle/turtle";
+import { FeedEffect } from "@/components/feed-effect";
+import { DeathScreen } from "@/components/death-screen";
+import { StatBar } from "@/components/stat-bar";
+import { Button } from "@/components/ui/button";
 
 export function App() {
-  const { state, feed, play, sleep, reset } = useTurtleState()
-  const { position, isMoving, moveToPosition } = useTurtleMovement(state.isAsleep, state.isDead)
-  const [isEating, setIsEating] = useState(false)
-  const [isHappy, setIsHappy] = useState(false)
-  const [feedPosition, setFeedPosition] = useState<{ x: number; y: number } | null>(null)
-  const eatingTimeout = useRef<number | null>(null)
-  const happyTimeout = useRef<number | null>(null)
+  const { state, feed, play, sleep, reset } = useTurtleState();
+  const { position, isMoving, moveToPosition } = useTurtleMovement(
+    state.isAsleep,
+    state.isDead,
+  );
+  const [isEating, setIsEating] = useState(false);
+  const [isHappy, setIsHappy] = useState(false);
+  const [feedPosition, setFeedPosition] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
+  const eatingTimeout = useRef<number | null>(null);
+  const happyTimeout = useRef<number | null>(null);
 
   const handleContextMenu = (e: React.MouseEvent) => {
-    e.preventDefault()
-    feed()
-    setFeedPosition({ x: e.clientX, y: e.clientY })
-    moveToPosition(e.clientX, e.clientY)
-    setIsEating(true)
-    if (eatingTimeout.current) clearTimeout(eatingTimeout.current)
-    eatingTimeout.current = window.setTimeout(() => setIsEating(false), 500)
-  }
+    e.preventDefault();
+    feed();
+    setFeedPosition({ x: e.clientX, y: e.clientY });
+    moveToPosition(e.clientX, e.clientY);
+    setIsEating(true);
+    if (eatingTimeout.current) clearTimeout(eatingTimeout.current);
+    eatingTimeout.current = window.setTimeout(() => setIsEating(false), 500);
+  };
 
   const handlePlay = () => {
-    play()
-    setIsHappy(true)
-    if (happyTimeout.current) clearTimeout(happyTimeout.current)
-    happyTimeout.current = window.setTimeout(() => setIsHappy(false), 600)
-  }
+    play();
+    setIsHappy(true);
+    if (happyTimeout.current) clearTimeout(happyTimeout.current);
+    happyTimeout.current = window.setTimeout(() => setIsHappy(false), 600);
+  };
 
   return (
     <div
@@ -76,6 +82,5 @@ export function App() {
       <FeedEffect trigger={feedPosition} />
       {state.isDead && <DeathScreen onReset={reset} />}
     </div>
-  )
+  );
 }
-

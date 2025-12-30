@@ -149,8 +149,13 @@
 }
 
 @keyframes idle-bob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
 }
 
 /* Happy - bounce */
@@ -159,9 +164,16 @@
 }
 
 @keyframes happy-bounce {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  25% { transform: translateY(-8px) rotate(-3deg); }
-  75% { transform: translateY(-8px) rotate(3deg); }
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-8px) rotate(-3deg);
+  }
+  75% {
+    transform: translateY(-8px) rotate(3deg);
+  }
 }
 
 /* Eating - head bob */
@@ -170,8 +182,13 @@
 }
 
 @keyframes eating-bob {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(4px); }
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(4px);
+  }
 }
 
 /* Sleeping - slower breathing */
@@ -186,8 +203,13 @@
 }
 
 @keyframes sleeping-breathe {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.02); }
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
 }
 
 /* Dead - gray and upside down */
@@ -211,7 +233,8 @@
 }
 
 @keyframes zzz-float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
     opacity: 1;
   }
@@ -244,11 +267,21 @@
 }
 
 @keyframes leg-walk-a {
-  0%, 100% { transform: translateX(0) translateY(0); }
-  50% { transform: translateX(4px) translateY(-2px); }
+  0%,
+  100% {
+    transform: translateX(0) translateY(0);
+  }
+  50% {
+    transform: translateX(4px) translateY(-2px);
+  }
 }
 
 @keyframes leg-walk-b {
-  0%, 100% { transform: translateX(0) translateY(0); }
-  50% { transform: translateX(-4px) translateY(-2px); }
+  0%,
+  100% {
+    transform: translateX(0) translateY(0);
+  }
+  50% {
+    transform: translateX(-4px) translateY(-2px);
+  }
 }

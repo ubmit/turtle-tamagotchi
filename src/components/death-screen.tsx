@@ -1,7 +1,7 @@
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 
 interface DeathScreenProps {
-  onReset: () => void
+  onReset: () => void;
 }
 
 export function DeathScreen({ onReset }: DeathScreenProps) {
@@ -14,5 +14,5 @@ export function DeathScreen({ onReset }: DeathScreenProps) {
         Try Again
       </Button>
     </div>
-  )
+  );
 }

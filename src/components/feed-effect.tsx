@@ -1,36 +1,36 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef } from "react";
 
 interface FoodParticle {
-  id: number
-  x: number
-  y: number
+  id: number;
+  x: number;
+  y: number;
 }
 
 interface FeedEffectProps {
-  trigger: { x: number; y: number } | null
+  trigger: { x: number; y: number } | null;
 }
 
 export function FeedEffect({ trigger }: FeedEffectProps) {
-  const [particles, setParticles] = useState<FoodParticle[]>([])
-  const idCounter = useRef(0)
+  const [particles, setParticles] = useState<FoodParticle[]>([]);
+  const idCounter = useRef(0);
 
   useEffect(() => {
-    if (!trigger) return
+    if (!trigger) return;
 
     const newParticle: FoodParticle = {
       id: idCounter.current++,
       x: trigger.x,
       y: trigger.y,
-    }
+    };
 
-    setParticles((prev) => [...prev, newParticle])
+    setParticles((prev) => [...prev, newParticle]);
 
     const timeout = setTimeout(() => {
-      setParticles((prev) => prev.filter((p) => p.id !== newParticle.id))
-    }, 1000)
+      setParticles((prev) => prev.filter((p) => p.id !== newParticle.id));
+    }, 1000);
 
-    return () => clearTimeout(timeout)
-  }, [trigger])
+    return () => clearTimeout(timeout);
+  }, [trigger]);
 
   return (
     <>
@@ -48,5 +48,5 @@ export function FeedEffect({ trigger }: FeedEffectProps) {
         </div>
       ))}
     </>
-  )
+  );
 }
