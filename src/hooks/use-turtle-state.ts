@@ -18,14 +18,24 @@ export interface TurtleState {
 }
 
 function applyOfflineDecay(state: TurtleState): TurtleState {
-  if (state.isDead || state.isAsleep) return state;
+  // Don't apply decay if already dead or asleep
+  if (state.isDead || state.isAsleep) {
+    return { ...state, lastUpdated: Date.now() };
+  }
 
   const elapsed = Date.now() - state.lastUpdated;
   const missedTicks = Math.floor(elapsed / DECAY_INTERVAL_MS);
-  const decayAmount = missedTicks * DECAY_PER_TICK;
 
+  // No decay needed if no time has passed
+  if (missedTicks === 0) {
+    return { ...state, lastUpdated: Date.now() };
+  }
+
+  const decayAmount = missedTicks * DECAY_PER_TICK;
   const newHunger = Math.max(0, state.hunger - decayAmount);
   const newHappiness = Math.max(0, state.happiness - decayAmount);
+
+  // Check death condition consistently
   const isDead = newHunger === 0 || newHappiness === 0;
 
   return {
@@ -37,23 +47,57 @@ function applyOfflineDecay(state: TurtleState): TurtleState {
   };
 }
 
-function loadState(): TurtleState {
-  const saved = localStorage.getItem(STORAGE_KEY);
-  if (!saved) return { ...DEFAULT_STATE, lastUpdated: Date.now() };
+function isValidTurtleState(obj: unknown): obj is TurtleState {
+  if (typeof obj !== "object" || obj === null) return false;
+  const state = obj as Record<string, unknown>;
+  return (
+    typeof state.hunger === "number" &&
+    typeof state.happiness === "number" &&
+    typeof state.lastUpdated === "number" &&
+    typeof state.isAsleep === "boolean" &&
+    typeof state.isDead === "boolean" &&
+    state.hunger >= 0 &&
+    state.hunger <= MAX_STAT &&
+    state.happiness >= 0 &&
+    state.happiness <= MAX_STAT
+  );
+}
 
-  const parsed = JSON.parse(saved) as TurtleState;
-  return applyOfflineDecay(parsed);
+function loadState(): TurtleState {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return { ...DEFAULT_STATE, lastUpdated: Date.now() };
+
+    const parsed = JSON.parse(saved);
+    if (!isValidTurtleState(parsed)) {
+      console.warn("Invalid turtle state in localStorage, using default");
+      return { ...DEFAULT_STATE, lastUpdated: Date.now() };
+    }
+
+    return applyOfflineDecay(parsed);
+  } catch (error) {
+    console.error("Failed to load turtle state from localStorage:", error);
+    return { ...DEFAULT_STATE, lastUpdated: Date.now() };
+  }
 }
 
 export function useTurtleState() {
   const [state, setState] = useState<TurtleState>(loadState);
 
-  // Persist on every change
+  // Debounced localStorage save (500ms delay)
   useEffect(() => {
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify({ ...state, lastUpdated: Date.now() }),
-    );
+    const timeoutId = setTimeout(() => {
+      try {
+        localStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify({ ...state, lastUpdated: Date.now() }),
+        );
+      } catch (error) {
+        console.error("Failed to save turtle state to localStorage:", error);
+      }
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
   }, [state]);
 
   // Active decay while tab is open (skip if sleeping or dead)

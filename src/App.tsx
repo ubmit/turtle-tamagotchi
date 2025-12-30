@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useTurtleState } from "@/hooks/use-turtle-state";
 import { useTurtleMovement } from "@/hooks/use-turtle-movement";
 import { Turtle } from "@/components/turtle/Turtle";
@@ -21,6 +21,14 @@ export function App() {
   } | null>(null);
   const eatingTimeout = useRef<number | null>(null);
   const happyTimeout = useRef<number | null>(null);
+
+  // Cleanup timeouts on unmount
+  useEffect(() => {
+    return () => {
+      if (eatingTimeout.current) clearTimeout(eatingTimeout.current);
+      if (happyTimeout.current) clearTimeout(happyTimeout.current);
+    };
+  }, []);
 
   const handleContextMenu = (e: React.MouseEvent) => {
     e.preventDefault();

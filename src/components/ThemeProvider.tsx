@@ -21,7 +21,7 @@ function getSystemTheme() {
     : THEMES.LIGHT;
 }
 
-const ThemeProviderContext = createContext(getSystemTheme());
+const ThemeProviderContext = createContext<string | undefined>(undefined);
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
   const [systemTheme, setSystemTheme] = useState(() => getSystemTheme());

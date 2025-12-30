@@ -1,13 +1,14 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import {
+  MOVE_INTERVAL_MS,
+  MOVE_DURATION_MS,
+  TURTLE_SIZE,
+} from "@/lib/constants";
 
 interface Position {
   x: number;
   y: number;
 }
-
-const MOVE_INTERVAL_MS = 5000;
-const MOVE_DURATION_MS = 2000;
-const TURTLE_SIZE = 128;
 
 export function useTurtleMovement(isAsleep: boolean, isDead: boolean) {
   const [position, setPosition] = useState<Position>({ x: 50, y: 50 });
@@ -28,17 +29,16 @@ export function useTurtleMovement(isAsleep: boolean, isDead: boolean) {
     };
   }, []);
 
+  const move = useCallback(() => {
+    setIsMoving(true);
+    setPosition(getRandomPosition());
+    setTimeout(() => setIsMoving(false), MOVE_DURATION_MS);
+  }, [getRandomPosition]);
+
   const startRandomMovement = useCallback(() => {
     if (intervalRef.current) clearInterval(intervalRef.current);
-
-    const move = () => {
-      setIsMoving(true);
-      setPosition(getRandomPosition());
-      setTimeout(() => setIsMoving(false), MOVE_DURATION_MS);
-    };
-
     intervalRef.current = window.setInterval(move, MOVE_INTERVAL_MS);
-  }, [getRandomPosition]);
+  }, [move]);
 
   const moveToPosition = useCallback(
     (targetX: number, targetY: number) => {
