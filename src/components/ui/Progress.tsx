@@ -3,7 +3,7 @@ import { Progress as BaseProgress } from "@base-ui/react/progress";
 
 import { cn } from "@/lib/utils";
 
-function Progress({
+export function Progress({
   className,
   value,
   style,
@@ -32,5 +32,3 @@ function Progress({
     </BaseProgress.Root>
   );
 }
-
-export { Progress };
