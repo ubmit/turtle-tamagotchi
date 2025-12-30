@@ -1,4 +1,4 @@
-import "./turtle.css";
+import "./Turtle.css";
 
 interface TurtleProps {
   isAsleep: boolean;

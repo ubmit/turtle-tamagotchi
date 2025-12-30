@@ -1,11 +1,11 @@
 import { useState, useRef } from "react";
 import { useTurtleState } from "@/hooks/use-turtle-state";
 import { useTurtleMovement } from "@/hooks/use-turtle-movement";
-import { Turtle } from "@/components/turtle/turtle";
-import { FeedEffect } from "@/components/feed-effect";
-import { DeathScreen } from "@/components/death-screen";
-import { StatBar } from "@/components/stat-bar";
-import { Button } from "@/components/ui/button";
+import { Turtle } from "@/components/turtle/Turtle";
+import { FeedEffect } from "@/components/FeedEffect";
+import { DeathScreen } from "@/components/DeathScreen";
+import { StatBar } from "@/components/StatBar";
+import { Button } from "@/components/ui/Button";
 
 export function App() {
   const { state, feed, play, sleep, reset } = useTurtleState();
