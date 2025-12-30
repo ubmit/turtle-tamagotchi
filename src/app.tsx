@@ -1,0 +1,66 @@
+import { useState, useRef } from "react"
+import { useTurtleState } from "@/hooks/use-turtle-state"
+import { Turtle } from "@/components/turtle/turtle"
+import { FeedEffect } from "@/components/feed-effect"
+import { DeathScreen } from "@/components/death-screen"
+import { StatBar } from "@/components/stat-bar"
+import { Button } from "@/components/ui/button"
+
+export function App() {
+  const { state, feed, play, sleep, reset } = useTurtleState()
+  const [isEating, setIsEating] = useState(false)
+  const [isHappy, setIsHappy] = useState(false)
+  const [feedPosition, setFeedPosition] = useState<{ x: number; y: number } | null>(null)
+  const eatingTimeout = useRef<number | null>(null)
+  const happyTimeout = useRef<number | null>(null)
+
+  const handleContextMenu = (e: React.MouseEvent) => {
+    e.preventDefault()
+    feed()
+    setFeedPosition({ x: e.clientX, y: e.clientY })
+    setIsEating(true)
+    if (eatingTimeout.current) clearTimeout(eatingTimeout.current)
+    eatingTimeout.current = window.setTimeout(() => setIsEating(false), 500)
+  }
+
+  const handlePlay = () => {
+    play()
+    setIsHappy(true)
+    if (happyTimeout.current) clearTimeout(happyTimeout.current)
+    happyTimeout.current = window.setTimeout(() => setIsHappy(false), 600)
+  }
+
+  return (
+    <div
+      className="min-h-screen w-full flex flex-col items-center justify-center gap-8 p-4"
+      onContextMenu={handleContextMenu}
+    >
+      <h1 className="text-2xl font-bold font-mono">Turtle Tamagotchi</h1>
+
+      <div className="flex flex-col gap-2">
+        <StatBar label="Hunger" value={state.hunger} color="#22c55e" />
+        <StatBar label="Happiness" value={state.happiness} color="#eab308" />
+      </div>
+
+      <Turtle
+        isAsleep={state.isAsleep}
+        isDead={state.isDead}
+        isEating={isEating}
+        isHappy={isHappy}
+        onClick={handlePlay}
+      />
+
+      <Button onClick={sleep} variant="outline" disabled={state.isDead}>
+        {state.isAsleep ? "Wake Up" : "Sleep"}
+      </Button>
+
+      <p className="text-xs text-muted-foreground">
+        Right-click anywhere to feed
+      </p>
+
+      <FeedEffect trigger={feedPosition} />
+      {state.isDead && <DeathScreen onReset={reset} />}
+    </div>
+  )
+}
+
