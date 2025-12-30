@@ -58,7 +58,7 @@ export function App() {
 
       {/* Wandering turtle */}
       <div
-        className="absolute transition-all duration-1000 ease-in-out"
+        className="absolute transition-all duration-2000 ease-in-out"
         style={{
           left: `${position.x}%`,
           top: `${position.y}%`,

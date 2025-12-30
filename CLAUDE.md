@@ -35,15 +35,18 @@ src/
 ## Code Conventions
 
 ### Filenames
+
 - React components: **PascalCase** (`DeathScreen.tsx`, `Button.tsx`)
 - Other TS files: **kebab-case** (`use-turtle-state.ts`, `constants.ts`)
 
 ### TypeScript
+
 - No default exports, use named exports inline
 - No `any` casts
 - Avoid unnecessary abstractions
 
 ### React
+
 - Compose small components, avoid large JSX blocks
 - Avoid `useEffect` unless necessary
 - Colocate related code

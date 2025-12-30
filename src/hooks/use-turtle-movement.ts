@@ -1,16 +1,18 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 interface Position {
   x: number;
   y: number;
 }
 
-const MOVE_INTERVAL_MS = 3000;
+const MOVE_INTERVAL_MS = 5000;
+const MOVE_DURATION_MS = 2000;
 const TURTLE_SIZE = 128;
 
 export function useTurtleMovement(isAsleep: boolean, isDead: boolean) {
   const [position, setPosition] = useState<Position>({ x: 50, y: 50 });
   const [isMoving, setIsMoving] = useState(false);
+  const intervalRef = useRef<number | null>(null);
 
   const getRandomPosition = useCallback(() => {
     const padding = 10;
@@ -22,6 +24,18 @@ export function useTurtleMovement(isAsleep: boolean, isDead: boolean) {
     };
   }, []);
 
+  const startRandomMovement = useCallback(() => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+
+    const move = () => {
+      setIsMoving(true);
+      setPosition(getRandomPosition());
+      setTimeout(() => setIsMoving(false), MOVE_DURATION_MS);
+    };
+
+    intervalRef.current = window.setInterval(move, MOVE_INTERVAL_MS);
+  }, [getRandomPosition]);
+
   const moveToPosition = useCallback(
     (targetX: number, targetY: number) => {
       if (isAsleep || isDead) return;
@@ -31,23 +45,25 @@ export function useTurtleMovement(isAsleep: boolean, isDead: boolean) {
 
       setIsMoving(true);
       setPosition({ x, y });
-      setTimeout(() => setIsMoving(false), 1000);
+      setTimeout(() => setIsMoving(false), MOVE_DURATION_MS);
+
+      // Reset random movement timer
+      startRandomMovement();
     },
-    [isAsleep, isDead],
+    [isAsleep, isDead, startRandomMovement],
   );
 
   useEffect(() => {
-    if (isAsleep || isDead) return;
+    if (isAsleep || isDead) {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      return;
+    }
 
-    const move = () => {
-      setIsMoving(true);
-      setPosition(getRandomPosition());
-      setTimeout(() => setIsMoving(false), 1000);
+    startRandomMovement();
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
     };
-
-    const interval = setInterval(move, MOVE_INTERVAL_MS);
-    return () => clearInterval(interval);
-  }, [isAsleep, isDead, getRandomPosition]);
+  }, [isAsleep, isDead, startRandomMovement]);
 
   return { position, isMoving, moveToPosition };
 }
