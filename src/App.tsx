@@ -46,7 +46,6 @@ export function App() {
     >
       {/* UI overlay */}
       <div className="absolute top-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 z-10">
-        <h1 className="text-2xl font-bold font-mono">Turtle Tamagotchi</h1>
         <div className="flex flex-col gap-2">
           <StatBar label="Hunger" value={state.hunger} color="#22c55e" />
           <StatBar label="Happiness" value={state.happiness} color="#eab308" />
@@ -76,7 +75,7 @@ export function App() {
       </div>
 
       <p className="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs text-muted-foreground">
-        Right-click anywhere to feed
+        Click to pet · Right-click to feed
       </p>
 
       <FeedEffect trigger={feedPosition} />

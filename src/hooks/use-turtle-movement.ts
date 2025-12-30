@@ -15,12 +15,16 @@ export function useTurtleMovement(isAsleep: boolean, isDead: boolean) {
   const intervalRef = useRef<number | null>(null);
 
   const getRandomPosition = useCallback(() => {
-    const padding = 10;
-    const maxX = 100 - padding - (TURTLE_SIZE / window.innerWidth) * 100;
-    const maxY = 100 - padding - (TURTLE_SIZE / window.innerHeight) * 100;
+    const paddingX = 10;
+    const paddingTop = 25; // Avoid stat bars
+    const paddingBottom = 12; // Avoid footer
+    const turtleW = (TURTLE_SIZE / window.innerWidth) * 100;
+    const turtleH = (TURTLE_SIZE / window.innerHeight) * 100;
     return {
-      x: padding + Math.random() * (maxX - padding),
-      y: padding + Math.random() * (maxY - padding),
+      x: paddingX + Math.random() * (100 - paddingX * 2 - turtleW),
+      y:
+        paddingTop +
+        Math.random() * (100 - paddingTop - paddingBottom - turtleH),
     };
   }, []);
 
