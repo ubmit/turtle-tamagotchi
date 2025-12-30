@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 
 export function App() {
   const { state, feed, play, sleep, reset } = useTurtleState()
-  const { position, isMoving } = useTurtleMovement(state.isAsleep, state.isDead)
+  const { position, isMoving, moveToPosition } = useTurtleMovement(state.isAsleep, state.isDead)
   const [isEating, setIsEating] = useState(false)
   const [isHappy, setIsHappy] = useState(false)
   const [feedPosition, setFeedPosition] = useState<{ x: number; y: number } | null>(null)
@@ -20,6 +20,7 @@ export function App() {
     e.preventDefault()
     feed()
     setFeedPosition({ x: e.clientX, y: e.clientY })
+    moveToPosition(e.clientX, e.clientY)
     setIsEating(true)
     if (eatingTimeout.current) clearTimeout(eatingTimeout.current)
     eatingTimeout.current = window.setTimeout(() => setIsEating(false), 500)

@@ -22,6 +22,17 @@ export function useTurtleMovement(isAsleep: boolean, isDead: boolean) {
     }
   }, [])
 
+  const moveToPosition = useCallback((targetX: number, targetY: number) => {
+    if (isAsleep || isDead) return
+
+    const x = (targetX / window.innerWidth) * 100
+    const y = (targetY / window.innerHeight) * 100
+
+    setIsMoving(true)
+    setPosition({ x, y })
+    setTimeout(() => setIsMoving(false), 1000)
+  }, [isAsleep, isDead])
+
   useEffect(() => {
     if (isAsleep || isDead) return
 
@@ -35,5 +46,5 @@ export function useTurtleMovement(isAsleep: boolean, isDead: boolean) {
     return () => clearInterval(interval)
   }, [isAsleep, isDead, getRandomPosition])
 
-  return { position, isMoving }
+  return { position, isMoving, moveToPosition }
 }
