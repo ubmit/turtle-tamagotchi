@@ -1,7 +1,6 @@
 import { useState, useRef } from "react";
 import { useTurtleState } from "@/hooks/use-turtle-state";
 import { useTurtleMovement } from "@/hooks/use-turtle-movement";
-import { useTheme } from "@/hooks/use-theme";
 import { Turtle } from "@/components/turtle/Turtle";
 import { FeedEffect } from "@/components/FeedEffect";
 import { DeathScreen } from "@/components/DeathScreen";
@@ -9,7 +8,6 @@ import { StatBar } from "@/components/StatBar";
 import { Button } from "@/components/ui/Button";
 
 export function App() {
-  useTheme();
   const { state, feed, play, sleep, reset } = useTurtleState();
   const { position, isMoving, moveToPosition } = useTurtleMovement(
     state.isAsleep,
