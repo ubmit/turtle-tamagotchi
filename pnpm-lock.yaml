@@ -7,6 +7,9 @@ settings:
 importers:
   .:
     dependencies:
+      "@radix-ui/colors":
+        specifier: ^3.0.0
+        version: 3.0.0
       "@radix-ui/react-progress":
         specifier: ^1.1.8
         version: 1.1.8(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -578,6 +581,12 @@ packages:
     resolution:
       {
         integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==,
+      }
+
+  "@radix-ui/colors@3.0.0":
+    resolution:
+      {
+        integrity: sha512-FUOsGBkHrYJwCSEtWRCIfQbZG7q1e6DgxCIOe1SUQzDe/7rXXeA47s8yCn6fuTNQAj1Zq4oTFi9Yjp3wzElcxg==,
       }
 
   "@radix-ui/react-compose-refs@1.1.2":
@@ -2431,6 +2440,8 @@ snapshots:
     dependencies:
       "@jridgewell/resolve-uri": 3.1.2
       "@jridgewell/sourcemap-codec": 1.5.5
+
+  "@radix-ui/colors@3.0.0": {}
 
   "@radix-ui/react-compose-refs@1.1.2(@types/react@19.2.7)(react@19.2.3)":
     dependencies:
