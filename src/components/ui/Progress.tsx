@@ -19,14 +19,13 @@ function Progress({
           "bg-primary/20 relative h-2 w-full overflow-hidden rounded-full",
           className,
         )}
+        style={style}
       >
         <BaseProgress.Indicator
           data-slot="progress-indicator"
-          className="h-full flex-1 transition-all"
+          className="h-full transition-all"
           style={{
-            width: `${value ?? 0}%`,
             backgroundColor: "var(--progress-color, var(--primary))",
-            ...style,
           }}
         />
       </BaseProgress.Track>
